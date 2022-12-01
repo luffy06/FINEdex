@@ -44,11 +44,16 @@
     abort();                       \
   }
 
+#ifndef DEBUG_DEFINITION
+#define DEBUG_DEFINITION
+
 #define NDEBUGGING
 #if defined(NDEBUGGING)
 #define DEBUG_THIS(this)
 #else
 #define DEBUG_THIS(this) std::cerr << this << std::endl
+#endif
+
 #endif
 
 namespace aidel {
