@@ -123,7 +123,7 @@ void *run_fg(void *param) {
     size_t query_i = 0, insert_i = 0, delete_i = 0, update_i = 0;
     // exsiting keys fall within range [delete_i, insert_i)
     ready_threads++;
-    volatile result_t res = result_t::failed;
+    volatile aidel::result_t res = aidel::result_t::failed;
     val_type dummy_value = 1234;
 
     while (!running)
