@@ -53,7 +53,7 @@ void FINEdex<key_t, val_t>::train(const std::vector<key_t> &keys,
     last_n = build_level(_maxErr, in_fun, out_fun);
 
     //root = new root_type(model_keys);
-    COUT_THIS("[aidle] get models -> "<< model_keys.size());
+    // COUT_THIS("[aidle] get models -> "<< model_keys.size());
     assert(model_keys.size()==aimodels.size());
 }
 
@@ -186,7 +186,7 @@ void FINEdex<key_t, val_t>::train_opt(const std::vector<key_t> &keys,
     // std::cout<<"training begin, length of training_data is:" << keys.size() <<" ,maxErr: "<< maxErr << std::endl;
 
     segments = make_segmentation(keys.begin(), keys.end(), maxErr);
-    COUT_THIS("[aidle] get models -> "<< segments.size());
+    // COUT_THIS("[aidle] get models -> "<< segments.size());
 
     /*
     // ===== predict the positions ===========
