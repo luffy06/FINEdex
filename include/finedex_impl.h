@@ -35,7 +35,7 @@ void FINEdex<key_t, val_t>::train(const std::vector<key_t> &keys,
 {
     assert(keys.size() == vals.size());
     maxErr = _maxErr;
-    std::cout<<"training begin, length of training_data is:" << keys.size() <<" ,maxErr: "<< maxErr << std::endl;
+    // std::cout<<"training begin, length of training_data is:" << keys.size() <<" ,maxErr: "<< maxErr << std::endl;
 
     size_t last_n = keys.size();
     auto build_level = [&](auto epsilon, auto in_fun, auto out_fun) -> size_t {
@@ -183,7 +183,7 @@ void FINEdex<key_t, val_t>::train_opt(const std::vector<key_t> &keys,
 
     assert(keys.size() == vals.size());
     maxErr = _maxErr;
-    std::cout<<"training begin, length of training_data is:" << keys.size() <<" ,maxErr: "<< maxErr << std::endl;
+    // std::cout<<"training begin, length of training_data is:" << keys.size() <<" ,maxErr: "<< maxErr << std::endl;
 
     segments = make_segmentation(keys.begin(), keys.end(), maxErr);
     COUT_THIS("[aidle] get models -> "<< segments.size());

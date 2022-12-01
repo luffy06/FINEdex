@@ -35,7 +35,7 @@ void AIDEL<key_t, val_t>::train(const std::vector<key_t> &keys,
 {
     assert(keys.size() == vals.size());
     maxErr = _maxErr;
-    std::cout<<"training begin, length of training_data is:" << keys.size() <<" ,maxErr: "<< maxErr << std::endl;
+    // std::cout<<"training begin, length of training_data is:" << keys.size() <<" ,maxErr: "<< maxErr << std::endl;
 
     size_t start = 0;
     size_t end = learning_step<keys.size()?learning_step:keys.size();
@@ -227,7 +227,7 @@ void AIDEL<key_t, val_t>::train_opt(const std::vector<key_t> &keys,
 
     assert(keys.size() == vals.size());
     maxErr = _maxErr;
-    std::cout<<"training begin, length of training_data is:" << keys.size() <<" ,maxErr: "<< maxErr << std::endl;
+    // std::cout<<"training begin, length of training_data is:" << keys.size() <<" ,maxErr: "<< maxErr << std::endl;
 
     segments = make_segmentation(keys.begin(), keys.end(), maxErr);
     COUT_THIS("[aidle] get models -> "<< segments.size());
