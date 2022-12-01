@@ -50,10 +50,17 @@
 #define DEBUG_THIS(this) std::cerr << this << std::endl
 #endif
 
+namespace aidel {
+
 enum class Result { ok, failed, retry, retrain };
 typedef Result result_t;
 
+}
+
 #define CACHELINE_SIZE (1 << 6)
+
+#ifndef MEM_FENCE
+#define MEM_FENCE
 
 // ==================== memory fence =========================
 #define likely(x) __builtin_expect(!!(x), 1)
@@ -91,6 +98,8 @@ inline uint8_t cmpxchgb(uint8_t *object, uint8_t expected,
   fence();
   return expected;
 }
+
+#endif
 
 // ========================= seach-schemes ====================
 

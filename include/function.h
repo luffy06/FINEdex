@@ -5,6 +5,7 @@ typedef uint64_t val_type;
 
 std::vector<key_type> exist_keys;
 std::vector<key_type> non_exist_keys;
+std::vector<val_type> exist_values;
 
 inline void load_data();
 inline void parse_args(int, char **);
@@ -208,6 +209,10 @@ void load_data(){
     }
     //std::vector<val_type> vals(exist_keys.size(), 1);
 
+    for (size_t i = 0; i < exist_keys.size(); ++ i) {
+        exist_values.push_back(i);
+    }
+
     COUT_VAR(exist_keys.size());
     COUT_VAR(non_exist_keys.size());
 }
@@ -366,7 +371,7 @@ void skew_data(){
     key_type maxdata = 987654321;
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<key_type> rand_int(0, 987654321);
+    std::uniform_int_distribution<> rand_int(0, 987654321);
 
     exist_keys.reserve(Config.exist_num);
     for (size_t i = 0; i < Config.exist_num; ++i) {
@@ -374,7 +379,7 @@ void skew_data(){
     }
     key_type upbound = (key_type)(Config.skewness*maxdata);
     COUT_THIS("[skewness upbound: ]"<<upbound);
-    std::uniform_int_distribution<key_type> rand_skew(0, upbound);
+    std::uniform_int_distribution<> rand_skew(0, upbound);
     non_exist_keys.reserve(Config.item_num);
     for (size_t i = 0; i < Config.item_num; ++i) {
         non_exist_keys.push_back(rand_skew(gen));
