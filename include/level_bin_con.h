@@ -343,7 +343,7 @@ public:
     }
 
     // resort for retraining
-    void resort(std::vector<key_type>& keys, std::vector<val_type>& vals) {
+    void resort(std::vector<key_type>& keys, std::vector<data_type>& vals) {
         assert(m_root);
         size_t itemnum = 0;
         const root_bin* r = m_root;

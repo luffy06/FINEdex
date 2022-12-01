@@ -45,7 +45,7 @@ void FINEdex<key_t, val_t>::train(const std::vector<key_t> &keys,
     };
 
     // Build first level
-    auto in_fun = [&](auto i) { return std::pair<key_t, size_t>(keys[i], i); };
+    auto in_fun = [&](auto i) { return std::pair<std::pair<key_t, val_t>, size_t>({keys[i], vals[i]}, i); };
     auto out_fun = [&](auto model, auto keys_begin, auto vals_begin, auto size, auto err) { 
         //aimodels.emplace_back(cs, nodetable);
         append_model(model, keys_begin, vals_begin, size, err);

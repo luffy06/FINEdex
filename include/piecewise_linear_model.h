@@ -56,7 +56,7 @@ private:
         SY y{};
 
         Slope operator-(const Point &p) const {
-            return {SX(x) - p.x, y - p.y};
+            return {static_cast<SX>(x - p.x), y - p.y};
         }
     };
 
@@ -334,40 +334,44 @@ size_t make_segmentation_data(size_t n, size_t epsilon, Fin in, Fout out, lrmode
     if (n == 0)
         return 0;
 
-    using X = typename std::invoke_result_t<Fin, size_t>::first_type;
-    using Y = typename std::invoke_result_t<Fin, size_t>::second_type;
-    using canonical_segment = typename OptimalPiecewiseLinearModel<key_type, size_t>::CanonicalSegment;
+    using key_t = typename std::invoke_result_t<Fin, size_t>::first_type::first_type;
+    using val_t = typename std::invoke_result_t<Fin, size_t>::first_type::second_type;
+    using canonical_segment = typename OptimalPiecewiseLinearModel<key_t, size_t>::CanonicalSegment;
     size_t c = 0;
     size_t start = 0;
     auto p = in(0);
 
-    OptimalPiecewiseLinearModel<X, Y> opt(epsilon);
-    opt.add_point(p.first, p.second);
-    std::vector<X> keys;
-    keys.push_back(p.first);
+    OptimalPiecewiseLinearModel<key_t, size_t> opt(epsilon);
+    opt.add_point(p.first.first, p.second);
+    std::vector<key_t> keys;
+    std::vector<val_t> vals;
+    keys.push_back(p.first.first);
+    vals.push_back(p.first.second);
 
     for (size_t i = 1; i < n; ++i) {
         auto next_p = in(i);
-        if (i != start && next_p.first == p.first)
+        if (i != start && next_p.first.first == p.first.first)
             continue;
         p = next_p;
 
-        bool add_success = opt.add_point(p.first, p.second-start);  // alwayse start from 0 for each segment
-        if(add_success) keys.push_back(p.first);
-        else {
+        bool add_success = opt.add_point(p.first.first, p.second-start);  // alwayse start from 0 for each segment
+        if(add_success) {
+            keys.push_back(p.first.first);
+            vals.push_back(p.first.second);
+        } else {
             canonical_segment cs = opt.get_segment();
             auto[cs_slope, cs_intercept] = cs.get_floating_point_segment(cs.get_first_x());
             lrmodel_type model(cs_slope, cs_intercept);
-            out(model, keys.begin(), keys.begin(), keys.size(), epsilon);
+            out(model, keys.begin(), vals.begin(), keys.size(), epsilon);
             // alwayse start from 0 for each segment
-            std::vector<X>().swap(keys);
+            std::vector<key_t>().swap(keys);
             assert(keys.size()==0);
             start = p.second;
-            opt.add_point(p.first, p.second-start);
-            keys.push_back(p.first);
+            opt.add_point(p.first.first, p.second-start);
+            keys.push_back(p.first.first);
             ++c;           
         }
-        /*if (!opt.add_point(p.first, p.second)) {
+        /*if (!opt.add_point(p.first.first, p.second)) {
             out(start, i, opt.get_segment());
             start = i;
             --i;
@@ -379,6 +383,6 @@ size_t make_segmentation_data(size_t n, size_t epsilon, Fin in, Fout out, lrmode
     canonical_segment cs = opt.get_segment();
     auto[cs_slope, cs_intercept] = cs.get_floating_point_segment(cs.get_first_x());
     lrmodel_type model(cs_slope, cs_intercept);
-    out(model, keys.begin(), keys.begin(), keys.size(), epsilon);
+    out(model, keys.begin(), vals.begin(), keys.size(), epsilon);
     return ++c;
 }
